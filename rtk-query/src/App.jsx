@@ -1,5 +1,5 @@
-import React from 'react'
-import { useGetPokemonByNameQuery } from './services/pokemon'
+import React, { useState } from 'react'
+import { useCreatePokemonMutation, useGetPokemonByNameQuery } from './services/pokemon'
 
 const App = () => {
 
@@ -17,8 +17,32 @@ const App = () => {
           <img src={data.sprites.front_shiny} alt={data.species.name} />
         </>
       ) : null}
+      <AddPokemon />
     </div>
   )
 }
+
+export const AddPokemon = () => {
+  const [name, setName] = useState('');
+  const [addPokemon, { isLoading }] = useCreatePokemonMutation();
+  console.log(name);
+  
+
+  return (
+    <div>
+      <input value={name} onChange={(e) => setName(e.target.value)} />
+      <button
+        onClick={() => {
+          addPokemon({ name })
+          setName('')
+        }}
+        disabled={isLoading}
+      >
+        Add Pokemon
+      </button>
+    </div>
+  )
+}
+
 
 export default App
